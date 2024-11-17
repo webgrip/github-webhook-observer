@@ -1,0 +1,47 @@
+groups:
+  - name: GitHubActionsAlerts
+    rules:
+      - alert: HighJobDuration
+        expr: histogram_quantile(0.95, sum(rate(github_actions_job_duration_seconds_bucket[5m])) by (le, job_name)) > 30
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High Job Duration"
+          description: "Job '{{ $labels.job_name }}' duration is too high."
+
+      - alert: HighBuildFailureRate
+        expr: sum(rate(github_actions_jobs_total{status="failure"}[5m])) by (job_name) / sum(rate(github_actions_jobs_total[5m])) by (job_name) > 0.2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Build Failure Rate"
+          description: "The failure rate for job '{{ $labels.job_name }}' is above 20%."
+
+      - alert: HighQueueTime
+        expr: avg(rate(github_actions_job_queue_time_seconds_sum[5m])) by (job_name) > 60
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Queue Time"
+          description: "The queue time for job '{{ $labels.job_name }}' is above 60 seconds."
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU Usage"
+          description: "CPU usage is over 80% for more than 5 minutes."
+
+      - alert: HighMemoryUsage
+        expr: node_memory_Active_bytes / node_memory_MemTotal_bytes * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High Memory Usage"
+          description: "Memory usage is over 80% for more than 5 minutes."

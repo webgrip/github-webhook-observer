@@ -1,0 +1,11 @@
+{
+  "name": "github-webhook-receiver",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "prom-client": "^15.1.2"
+  }
+}

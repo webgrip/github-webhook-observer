@@ -1,0 +1,46 @@
+services:
+  github-webhook-observer:
+    container_name: github-webhook-observer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SERVICE_PUBLIC_URL=http://github-webhook-observer-ngrok:4040
+
+  github-webhook-observer-ngrok:
+    container_name: github-webhook-observer-ngrok
+    image: ngrok/ngrok:3.10.0-alpine
+    #restart: unless-stopped
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    volumes:
+      - ./ops/ngrok/ngrok.yml:/etc/ngrok.yml
+    ports:
+      - 4040:4040
+    env_file:
+      - ops/ngrok/.env
+
+  github-webhook-observer-node-exporter:
+    container_name: github-webhook-observer-node-exporter
+    image: prom/node-exporter:v1.8.1
+    ports:
+      - "9100:9100"
+
+  github-webhook-observer-prometheus:
+    container_name: github-webhook-observer-prometheus
+    image: prom/prometheus:v2.52.0
+    volumes:
+      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./ops/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+    ports:
+      - "9090:9090"
+
+networks:
+  default:
+    external: true
+    name: webgrip

@@ -1,0 +1,13 @@
+version: "2"
+connect_timeout: 30s
+console_ui: true
+dns_resolver_ips:
+  - 1.1.1.1
+  - 8.8.8.8
+heartbeat_interval: 1m
+heartbeat_tolerance: 5s
+web_addr: 0.0.0.0:4040
+tunnels:
+  github-webhook-observer:
+    addr: github-webhook-observer:8000
+    proto: http

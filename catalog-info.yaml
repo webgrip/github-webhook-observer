@@ -1,0 +1,93 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: github-webhook-initializer
+  namespace: webgrip
+  title: Gtihub Webhook Initializer
+  description: |
+    The Webhook Initializer service sets up webhooks in the organization to point to the webhook receiver.
+  labels:
+    tier: "2"
+  annotations:
+    github.com/project-slug: webgrip/github-webhook-initializer
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=github-webhook-initializer'
+    simpleicons.org/icon-slug: githubactions
+  tags:
+    - monitoring
+    - webhook
+    - automation
+  links:
+    - url: https://github.com/webgrip/github-webhook-initializer
+      title: Source Code
+      icon: github
+      type: source
+spec:
+  type: service
+  lifecycle: development
+  owner: group:webgrip/infrastructure
+  system: monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: github-webhook-observer
+  namespace: webgrip
+  title: GitHub Webhook Receiver
+  description: |
+    Observes and processes GitHub webhooks
+  labels:
+    tier: "2"
+  annotations:
+    github.com/project-slug: webgrip/github-webhook-observer
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=github-webhook-observer'
+    simpleicons.org/icon-slug: githubactions
+  tags:
+    - monitoring
+    - github
+    - webhook
+  links:
+    - url: https://github.com/webgrip/github-webhook-observer
+      title: Source Code
+      icon: github
+      type: source
+spec:
+  type: service
+  lifecycle: development
+  owner: group:webgrip/infrastructure
+  system: monitoring-platform-system
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: github-webhook-observer-ngrok
+  namespace: webgrip
+  title: Ngrok
+  description: |
+    Ngrok is used to expose the webhook receiver to the internet for testing.
+  labels:
+    tier: "2"
+  annotations:
+    docker.io/image: ngrok/ngrok:3.10.0-alpine
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/name=github-webhook-observer-ngrok'
+    simpleicons.org/icon-slug: ngrok
+  tags:
+    - monitoring
+    - ngrok
+    - tunneling
+  links:
+    - url: https://ngrok.com/
+      title: Ngrok Website
+      icon: ngrok
+      type: website
+    - title: Prometheus
+      url: https://prometheus.io/
+      icon: prometheus
+      type: website
+spec:
+  type: tool
+  lifecycle: development
+  owner: group:webgrip/infrastructure
+  system: monitoring-platform-system

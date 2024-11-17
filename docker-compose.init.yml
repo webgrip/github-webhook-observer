@@ -1,0 +1,13 @@
+services:
+  github-webhook-initializer:
+    container_name: github-webhook-initializer
+    build:
+      context: ops/github-webhook-initializer
+      dockerfile: Dockerfile
+    env_file:
+      - ops/github-webhook-initializer/.env
+
+networks:
+  default:
+    external: true
+    name: webgrip

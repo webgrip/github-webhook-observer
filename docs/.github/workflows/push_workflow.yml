@@ -1,0 +1,12 @@
+concurrency:
+  group: push-${{ github.branch }}
+on:
+  push:
+    branches:
+      - 'master'
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
